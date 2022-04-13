@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Navbar, Sidebar, Content } from './components';
 
 export function App() {
   return (
-    <div className='App'>
-      <h1>Hello World</h1>
-    </div>
+    <>
+      <Navbar />
+      <Sidebar />
+      {/* <Content /> */}
+    </>
   );
 }
