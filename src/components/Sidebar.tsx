@@ -46,7 +46,7 @@ export function Sidebar({
         className={`${
           currentPage === 'today' && '!bg-gray-200 font-bold'
         } before:absolute before:text-[10px] before:font-normal before:text-green-500 hover:bg-white 
-          before:content-["${todaysDate}"] before:[transform:translate(4px,3px)] hover:bg-white`}
+          before:content-['${todaysDate}'] before:[transform:translate(4px,3px)] hover:bg-white`}
         role='button'
         tabIndex={0}
         onClick={handleCurrentPage('today')}
@@ -72,7 +72,7 @@ export function Sidebar({
       </a>
       <div
         id='projects'
-        className='ml-8 flex flex-col !gap-1 overflow-hidden !transition-height !duration-300
+        className='ml-10 mt-2 flex flex-col !gap-1 overflow-hidden !p-0 !transition-height !duration-300
                    children:w-full children:rounded children:p-1 children:text-sm
                    children:transition-colors'
       >
