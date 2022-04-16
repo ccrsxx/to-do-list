@@ -4,6 +4,7 @@ import { Navbar, Sidebar, Content } from './components';
 
 export function App() {
   const [currentPage, setCurrentPage] = useLocalStorage('currentPage', 'inbox');
+
   const [isSidebarOpen, setIsSidebarOpen] = useLocalStorage(
     'isSidebarOpen',
     true
@@ -17,7 +18,6 @@ export function App() {
 
   useEffect(() => {
     const handleResize = () => setIsSmallScreen(window.innerWidth < 800);
-    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -29,7 +29,6 @@ export function App() {
 
   useEffect(() => {
     const projects = document.getElementById('projects') as HTMLElement;
-
     if (isProjectsOpen) projects.style.height = `${projects.scrollHeight}px`;
     else projects.style.height = '0px';
   }, [isProjectsOpen]);
@@ -51,6 +50,8 @@ export function App() {
     () => new Date().toLocaleDateString('en-gb').slice(0, 2),
     []
   );
+
+  console.log(todaysDate);
 
   return (
     <>
