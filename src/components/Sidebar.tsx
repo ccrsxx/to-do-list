@@ -27,10 +27,10 @@ export function Sidebar({
     <aside
       className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed h-full w-[300px] flex-col bg-sidebar-bg pl-9 pt-5 transition-transform 
-        duration-300 children:mb-2 children:mr-2 children:flex children:cursor-pointer
-        children:select-none children:items-center children:gap-4 children:rounded
-        children:p-2 children:transition-colors`}
+      } fixed z-10 h-full w-[300px] flex-col bg-sidebar-bg pl-9 pt-5 
+        transition-transform duration-300 children:mb-2 children:mr-2 children:flex
+        children:cursor-pointer children:select-none children:items-center children:gap-4
+        children:rounded children:p-2 children:transition-colors `}
     >
       <a
         className={`${

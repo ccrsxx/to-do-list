@@ -17,7 +17,7 @@ interface ToolTipsProps {
 function ToolTips({ text }: ToolTipsProps) {
   return (
     <div
-      className='invisible absolute top-[-35px] left-[50%] z-10 translate-x-[-50%] whitespace-nowrap 
+      className='z-1 invisible absolute top-[-35px] left-[50%] translate-x-[-50%] whitespace-nowrap 
                  rounded bg-black px-2 py-1 text-center text-sm text-white opacity-0
                  transition-opacity duration-300 group-hover:visible group-hover:opacity-100'
     >

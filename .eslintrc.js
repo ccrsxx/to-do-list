@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     'jsx-quotes': ['error', 'prefer-single'],
+    'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'no-console': 'warn',
