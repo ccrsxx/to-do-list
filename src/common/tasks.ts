@@ -3,6 +3,7 @@ export const newTaskDefault = {
   title: '',
   description: '',
   date: '',
-  priority: 'normal' as 'low' | 'normal' | 'high',
-  project: 'inbox'
+  priority: 'medium' as 'low' | 'medium' | 'high',
+  project: 'inbox',
+  completed: false
 };

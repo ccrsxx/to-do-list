@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useLocalStorage, newTaskDefault } from './common';
+import { useForm, FormProvider } from 'react-hook-form';
+import { useLocalStorage, newTaskDefault, ContentContext } from './common';
 import { Navbar, Sidebar, Content, Modal } from './components';
 import type { Task } from './types';
 
 export function App() {
   const [currentPage, setCurrentPage] = useLocalStorage('currentPage', 'inbox');
+  const [modalMode, setModalMode] = useState('add');
   const [allTasks, setAllTasks] = useLocalStorage<Task[]>('allTasks', []);
   const [newTask, setNewTask] = useLocalStorage<Task>(
     'newTask',
@@ -16,6 +18,8 @@ export function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
+
+  const methods = useForm<Task>({ defaultValues: newTaskDefault });
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 800);
@@ -34,49 +38,20 @@ export function App() {
     else projects.style.height = '0px';
   }, [isProjectsOpen]);
 
-  const handleChange =
-    (targetId?: number) =>
-    ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, type, checked, value } = target;
-      const inputValue = type === 'checkbox' ? checked : value;
-
-      if (targetId) {
-        setAllTasks(
-          allTasks.map((task) =>
-            task.id === targetId ? { ...task, [name]: inputValue } : task
-          )
-        );
-        setSelectedTask({ ...selectedTask, [name]: inputValue } as Task);
-      } else {
-        setNewTask({ ...newTask, [name]: inputValue });
-      }
-    };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setAllTasks([...allTasks, { ...newTask, id: Date.now() }]);
-    setNewTask(newTaskDefault);
+  const onSubmit = (task: Task) => {
+    setAllTasks([{ ...task, id: Date.now() }, ...allTasks]);
+    methods.reset(newTaskDefault);
+    methods.clearErrors();
     setIsModalOpen(false);
   };
 
-  // const handleModal =
-  //   (mode: 'add' | 'edit' | 'delete') =>
-  //   (
-  //     e:
-  //       | React.FormEvent<HTMLFormElement>
-  //       | React.MouseEvent<HTMLDivElement | HTMLButtonElement>
-  //   ) => {
-  //     if (e.type === 'submit') e.preventDefault();
-
-  //     setIsModalOpen(false);
-
-  //     if (mode !== 'add') {
-  //       setTimeout(() => {
-  //         setSelectedTask(null);
-  //         // setModalMode('add');
-  //       }, 300);
-  //     }
-  //   };
+  const toggleCompleted = (targetId: number) => () => {
+    setAllTasks(
+      allTasks.map((task) =>
+        task.id === targetId ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
 
   const handleSidebarClick = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -104,6 +79,8 @@ export function App() {
     []
   );
 
+  console.log(methods);
+
   return (
     <>
       <Navbar
@@ -119,12 +96,16 @@ export function App() {
         handleCurrentPage={handleCurrentPage}
         handleProjectsClickOpen={handleProjectsClick}
       />
-      <Content isSidebarOpen={isSidebarOpen} />
-      <Modal
-        isModalOpen={isModalOpen}
-        closeModal={closeModal}
-        handleSubmit={handleSubmit}
-      />
+      <ContentContext.Provider value={{ toggleCompleted }}>
+        <Content isSidebarOpen={isSidebarOpen} allTasks={allTasks} />
+      </ContentContext.Provider>
+      <FormProvider {...methods}>
+        <Modal
+          isModalOpen={isModalOpen}
+          onSubmit={onSubmit}
+          closeModal={closeModal}
+        />
+      </FormProvider>
     </>
   );
 }

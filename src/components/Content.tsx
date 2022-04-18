@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { ContentContext } from '../common';
 import {
   FiEdit3,
   FiFlag,
@@ -5,32 +7,50 @@ import {
   FiTrash2,
   TiArrowSortedDown
 } from '../common';
+import type { Task } from '../types';
 
 interface ContentProps {
   isSidebarOpen: boolean;
+  allTasks: Task[];
 }
 
 interface ToolTipsProps {
-  text: string;
+  tips: string;
+  first: undefined | boolean;
 }
 
-function ToolTips({ text }: ToolTipsProps) {
+function ToolTips({ tips, first }: ToolTipsProps) {
   return (
     <div
-      className='z-1 invisible absolute top-[-35px] left-[50%] translate-x-[-50%] whitespace-nowrap 
-                 rounded bg-black px-2 py-1 text-center text-sm text-white opacity-0
-                 transition-opacity duration-300 group-hover:visible group-hover:opacity-100'
+      className={`z-1 invisible absolute top-[${
+        first ? '35px' : '-35px'
+      }] left-[50%] translate-x-[-50%] whitespace-nowrap 
+         rounded bg-black px-2 py-1 text-center text-sm text-white opacity-0
+         transition-opacity duration-300 group-hover:visible group-hover:opacity-100`}
     >
-      {text}
+      {tips}
       <TiArrowSortedDown
-        className='absolute top-[20px] left-[50%] translate-x-[-50%]
-                   text-lg text-black group-hover:inline-block'
+        className={`absolute top-[${
+          first ? '-20px' : '20px'
+        }] left-[50%] translate-x-[-50%]
+           text-lg text-black group-hover:inline-block`}
       />
     </div>
   );
 }
 
-function List() {
+function TaskList({
+  id,
+  title,
+  description,
+  date,
+  priority,
+  project,
+  completed,
+  first
+}: Task) {
+  const { toggleCompleted } = useContext(ContentContext);
+
   return (
     <div
       className='flex justify-between border-b border-gray-300 p-1 children:flex
@@ -43,33 +63,37 @@ function List() {
                      bg-contain bg-center bg-no-repeat align-top transition duration-200 
                    checked:border-blue-500 checked:bg-blue-500 focus:outline-none'
           type='checkbox'
-          value=''
+          checked={completed}
+          onChange={toggleCompleted(id)}
         />
-        <p className='form-check-label inline-block'>Default checkbox</p>
+        <p className={`${completed && 'line-through'} inline-block`}>{title}</p>
       </div>
       <div className='children:relative children:transition-colors children:duration-300'>
         <button className='group rounded p-1 hover:bg-gray-200' type='button'>
           <FiEdit3 className='group-hover:text-black' />
-          <ToolTips text='Edit' />
+          <ToolTips tips='Edit' first={first} />
         </button>
         <button className='group rounded p-1 hover:bg-gray-200' type='button'>
           <FiFlag className='group-hover:text-black' />
-          <ToolTips text='Change priority' />
+          <ToolTips tips='Change priority' first={first} />
         </button>
         <button className='group rounded p-1 hover:bg-gray-200' type='button'>
           <BsArrowRightCircle className='group-hover:text-black' />
-          <ToolTips text='Move project' />
+          <ToolTips tips='Move project' first={first} />
         </button>
-        <button className='group rounded p-1 hover:bg-gray-200' type='button'>
+        <button
+          className='group mr-4 rounded p-1 hover:bg-gray-200'
+          type='button'
+        >
           <FiTrash2 className='group-hover:text-black' />
-          <ToolTips text='Delete' />
+          <ToolTips tips='Delete' first={first} />
         </button>
       </div>
     </div>
   );
 }
 
-export function Content({ isSidebarOpen }: ContentProps) {
+export function Content({ isSidebarOpen, allTasks }: ContentProps) {
   return (
     <main
       className={`${
@@ -77,10 +101,10 @@ export function Content({ isSidebarOpen }: ContentProps) {
       } p-10 transition-all duration-300 children:mx-auto children:max-w-5xl`}
     >
       <h1 className='text-4xl font-bold'>Today</h1>
-      <div className='mt-4 flex flex-col gap-5 text-lg'>
-        <List />
-        <List />
-        <List />
+      <div className='mt-4 flex h-[75vh] flex-col gap-5 overflow-y-auto overflow-x-hidden text-lg'>
+        {allTasks.map((task, index) => (
+          <TaskList key={task.id} first={index === 0} {...task} />
+        ))}
       </div>
     </main>
   );
