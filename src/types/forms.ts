@@ -1,4 +1,4 @@
-export type Task = {
+export interface Task {
   id: number;
   title: string;
   description: string;
@@ -7,4 +7,9 @@ export type Task = {
   project: string;
   completed: boolean;
   first?: boolean;
-};
+}
+
+export interface Project {
+  id: number;
+  title: string;
+}

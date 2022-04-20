@@ -22,18 +22,20 @@ interface ToolTipsProps {
 function ToolTips({ tips, first }: ToolTipsProps) {
   return (
     <div
-      className={`z-1 invisible absolute top-[${
-        first ? '35px' : '-35px'
-      }] left-[50%] translate-x-[-50%] whitespace-nowrap 
-         rounded bg-black px-2 py-1 text-center text-sm text-white opacity-0
-         transition-opacity duration-300 group-hover:visible group-hover:opacity-100`}
+      style={first ? { top: 35 } : undefined}
+      className={`invisible absolute -top-[35px] left-[50%] translate-x-[-50%] whitespace-nowrap 
+                  rounded bg-black px-2 py-1 text-center text-sm text-white opacity-0
+                  transition-opacity duration-300 group-hover:visible group-hover:opacity-100`}
     >
       {tips}
       <TiArrowSortedDown
-        className={`absolute top-[${
-          first ? '-20px' : '20px'
-        }] left-[50%] translate-x-[-50%]
-           text-lg text-black group-hover:inline-block`}
+        style={
+          first
+            ? { top: -10, transform: 'rotate(180deg) translateX(50%)' }
+            : undefined
+        }
+        className={`absolute top-[20px] left-[50%] -translate-x-[50%]
+                    text-lg text-black group-hover:inline-block`}
       />
     </div>
   );
@@ -49,12 +51,15 @@ function TaskList({
   completed,
   first
 }: Task) {
-  const { toggleCompleted } = useContext(ContentContext);
+  const { toggleCompleted, editTask, removeTask } = useContext(ContentContext);
 
   return (
     <div
-      className='flex justify-between border-b border-gray-300 p-1 children:flex
-                 children:gap-1'
+      className='z-0 mr-4 flex justify-between border-b border-gray-300
+                 p-1 children:flex children:gap-1'
+      onClick={toggleCompleted(id)}
+      role='button'
+      tabIndex={0}
     >
       <div>
         <input
@@ -69,21 +74,32 @@ function TaskList({
         <p className={`${completed && 'line-through'} inline-block`}>{title}</p>
       </div>
       <div className='children:relative children:transition-colors children:duration-300'>
-        <button className='group rounded p-1 hover:bg-gray-200' type='button'>
+        <button
+          className='z-1 group rounded p-1 hover:bg-gray-200'
+          type='button'
+          onClick={editTask(id)}
+        >
           <FiEdit3 className='group-hover:text-black' />
           <ToolTips tips='Edit' first={first} />
         </button>
-        <button className='group rounded p-1 hover:bg-gray-200' type='button'>
+        <button
+          className='z-1 group rounded p-1 hover:bg-gray-200'
+          type='button'
+        >
           <FiFlag className='group-hover:text-black' />
           <ToolTips tips='Change priority' first={first} />
         </button>
-        <button className='group rounded p-1 hover:bg-gray-200' type='button'>
+        <button
+          className='z-1 group rounded p-1 hover:bg-gray-200'
+          type='button'
+        >
           <BsArrowRightCircle className='group-hover:text-black' />
           <ToolTips tips='Move project' first={first} />
         </button>
         <button
-          className='group mr-4 rounded p-1 hover:bg-gray-200'
+          className='z-1 group rounded p-1 hover:bg-gray-200'
           type='button'
+          onClick={removeTask(id)}
         >
           <FiTrash2 className='group-hover:text-black' />
           <ToolTips tips='Delete' first={first} />
@@ -101,7 +117,7 @@ export function Content({ isSidebarOpen, allTasks }: ContentProps) {
       } p-10 transition-all duration-300 children:mx-auto children:max-w-5xl`}
     >
       <h1 className='text-4xl font-bold'>Today</h1>
-      <div className='mt-4 flex h-[75vh] flex-col gap-5 overflow-y-auto overflow-x-hidden text-lg'>
+      <div className='mt-4 flex h-[72vh] flex-col gap-4 overflow-y-auto overflow-x-hidden text-lg'>
         {allTasks.map((task, index) => (
           <TaskList key={task.id} first={index === 0} {...task} />
         ))}

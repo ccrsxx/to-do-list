@@ -37,6 +37,7 @@ module.exports = {
     'no-console': 'warn',
     'linebreak-style': 'off',
     'no-nested-ternary': 'off',
+    'react/no-array-index-key': 'off',
     'react/require-default-props': 'off',
     'react/self-closing-comp': 'warn',
     'react/jsx-props-no-spreading': 'off',

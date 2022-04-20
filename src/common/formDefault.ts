@@ -7,3 +7,8 @@ export const newTaskDefault = {
   project: 'inbox',
   completed: false
 };
+
+export const newProjectDefault = {
+  id: Date.now(),
+  title: ''
+};
