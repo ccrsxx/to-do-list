@@ -1,5 +1,5 @@
-import { Dialog } from '@headlessui/react';
 import { useContext } from 'react';
+import { Dialog } from '@headlessui/react';
 import { ModalContext, VscWarning } from '../../common';
 
 interface RemoveModalProps {
