@@ -5,32 +5,39 @@ import {
   BsCalendar3,
   BsCalendar4
 } from '../common';
+import type { ProjectType } from '../types';
 
 interface SidebarProps {
   currentPage: string;
+  allProjects: ProjectType[];
   isProjectsOpen: boolean;
   isSidebarOpen: boolean;
   todaysDate: string;
+  addProject: () => void;
   handleCurrentPage: (page: string) => () => void;
   handleProjectsClickOpen: () => void;
 }
 
 export function Sidebar({
   currentPage,
+  allProjects,
   isProjectsOpen,
   isSidebarOpen,
   todaysDate,
+  addProject,
   handleCurrentPage,
   handleProjectsClickOpen
 }: SidebarProps) {
+  const todayCalendar = `before:content-["${todaysDate}"]`;
+
   return (
     <aside
       className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed h-full w-[300px] flex-col bg-sidebar-bg pl-9 pt-5 transition-transform 
-        duration-300 children:mb-2 children:mr-2 children:flex children:cursor-pointer
-        children:select-none children:items-center children:gap-4 children:rounded
-        children:p-2 children:transition-colors`}
+      } fixed z-10 h-full w-[300px] flex-col bg-sidebar-bg pl-9 pt-5 
+        transition-transform duration-300 children:mb-2 children:mr-2 children:flex
+        children:cursor-pointer children:select-none children:items-center children:gap-4
+        children:rounded children:p-2 children:transition-colors `}
     >
       <a
         className={`${
@@ -46,7 +53,7 @@ export function Sidebar({
         className={`${
           currentPage === 'today' && '!bg-gray-200 font-bold'
         } before:absolute before:text-[10px] before:font-normal before:text-green-500 hover:bg-white 
-          before:content-['${todaysDate}'] before:[transform:translate(4px,3px)] hover:bg-white`}
+          ${todayCalendar} before:[transform:translate(4px,3px)] hover:bg-white`}
         role='button'
         tabIndex={0}
         onClick={handleCurrentPage('today')}
@@ -76,39 +83,23 @@ export function Sidebar({
                    children:w-full children:rounded children:p-1 children:text-sm
                    children:transition-colors'
       >
-        <a
-          className={`${
-            currentPage === 'homework' && '!bg-gray-200 font-bold'
-          } hover:bg-white`}
-          role='button'
-          tabIndex={0}
-          onClick={handleCurrentPage('homework')}
-        >
-          Homework
-        </a>
-        <a
-          className={`${
-            currentPage === 'learnreact' && '!bg-gray-200 font-bold'
-          } hover:bg-white`}
-          role='button'
-          tabIndex={0}
-          onClick={handleCurrentPage('learnreact')}
-        >
-          Learn React
-        </a>
-        <a
-          className={`${
-            currentPage === 'tailwindcss' && '!bg-gray-200 font-bold'
-          } hover:bg-white`}
-          role='button'
-          tabIndex={0}
-          onClick={handleCurrentPage('tailwindcss')}
-        >
-          Tailwindcss
-        </a>
+        {allProjects.map(({ id, title }) => (
+          <a
+            key={id}
+            className={`${
+              currentPage === title && '!bg-gray-200 font-bold'
+            } hover:bg-white`}
+            role='button'
+            tabIndex={0}
+            onClick={handleCurrentPage(title)}
+          >
+            {title}
+          </a>
+        ))}
         <button
           type='button'
           className='group flex items-center gap-2 hover:text-red-500'
+          onClick={addProject}
         >
           <i className='rounded-full p-1 transition-colors duration-300 group-hover:bg-red-500'>
             <VscAdd className='transition-colors duration-300 group-hover:text-white' />{' '}

@@ -30,12 +30,18 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     'jsx-quotes': ['error', 'prefer-single'],
+    'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
+    'import/no-duplicates': 'off',
     'no-console': 'warn',
     'linebreak-style': 'off',
     'no-nested-ternary': 'off',
+    'react/no-array-index-key': 'off',
+    'react/require-default-props': 'off',
     'react/self-closing-comp': 'warn',
+    'react/jsx-props-no-spreading': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
     'import/prefer-default-export': 'off'
   }
 };
