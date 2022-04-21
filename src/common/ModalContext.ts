@@ -1,8 +1,10 @@
-import React, { createContext } from 'react';
-import type { Project } from '../types';
+import { createContext } from 'react';
+import { ProjectType, TaskType } from '../types';
 
 interface ModalContextProps {
-  allProjects: Project[];
+  allProjects: ProjectType[];
+  allTasks: TaskType[];
+  selectedTaskId: null | number;
   removeTask: (targetId?: number) => (e: React.MouseEvent) => void;
 }
 

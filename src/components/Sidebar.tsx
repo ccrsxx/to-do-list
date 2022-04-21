@@ -5,11 +5,11 @@ import {
   BsCalendar3,
   BsCalendar4
 } from '../common';
-import type { Project } from '../types';
+import type { ProjectType } from '../types';
 
 interface SidebarProps {
   currentPage: string;
-  allProjects: Project[];
+  allProjects: ProjectType[];
   isProjectsOpen: boolean;
   isSidebarOpen: boolean;
   todaysDate: string;

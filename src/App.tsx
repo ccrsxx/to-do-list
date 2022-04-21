@@ -1,36 +1,33 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import React, { useEffect, useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import {
-  useLocalStorage,
+  ContentContext,
+  ModalContext,
   newProjectDefault,
   newTaskDefault,
-  ContentContext,
-  ModalContext
+  useLocalStorage
 } from './common';
-import { Navbar, Sidebar, Content, Modal } from './components';
-import type { Task, Project } from './types';
+import { Content, Modal, Navbar, Sidebar } from './components';
+import { ProjectType, TaskType, ModalType } from './types';
 
 export function App() {
   const [currentPage, setCurrentPage] = useLocalStorage('currentPage', 'inbox');
 
-  const [allProjects, setAllProjects] = useLocalStorage<Project[]>(
+  const [allProjects, setAllProjects] = useLocalStorage<ProjectType[]>(
     'allProjects',
     []
   );
 
-  const [allTasks, setAllTasks] = useLocalStorage<Task[]>('allTasks', []);
+  const [allTasks, setAllTasks] = useLocalStorage<TaskType[]>('allTasks', []);
   const [selectedTaskId, setSelectedTaskId] = useState<null | number>(null);
-
-  const [modalMode, setModalMode] = useState<
-    'add' | 'view' | 'edit' | 'project' | 'remove'
-  >('add');
+  const [modalMode, setModalMode] = useState<ModalType>('add');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isProjectsOpen, setIsProjectsOpen] = useState(true);
 
-  const formMethods = useForm<Task | Project>({
+  const formMethods = useForm<TaskType | ProjectType>({
     defaultValues: newTaskDefault
   });
 
@@ -57,9 +54,17 @@ export function App() {
     setIsModalOpen(true);
   };
 
+  const viewTask = (targetId: number) => () => {
+    setModalMode('view');
+    setIsModalOpen(true);
+    setSelectedTaskId(targetId);
+  };
+
   const editTask = (targetId: number) => (e: React.MouseEvent) => {
     e.stopPropagation();
-    formMethods.reset(allTasks.find((task) => task.id === targetId) as Task);
+    formMethods.reset(
+      allTasks.find((task) => task.id === targetId) as TaskType
+    );
     setModalMode('edit');
     setIsModalOpen(true);
   };
@@ -77,14 +82,17 @@ export function App() {
     }
   };
 
-  const onSubmit = (currentTask: Task | Project) => {
+  const onSubmit = (currentTask: TaskType | ProjectType) => {
     if (modalMode === 'add') {
-      setAllTasks([{ ...currentTask, id: Date.now() } as Task, ...allTasks]);
+      setAllTasks([
+        { ...currentTask, id: Date.now() } as TaskType,
+        ...allTasks
+      ]);
     } else if (modalMode === 'edit') {
       setAllTasks(
         allTasks.map((task) =>
           task.id === currentTask.id ? currentTask : task
-        ) as Task[]
+        ) as TaskType[]
       );
     } else if (modalMode === 'project') {
       let { title } = currentTask;
@@ -172,11 +180,13 @@ export function App() {
         handleProjectsClickOpen={handleProjectsClick}
       />
       <ContentContext.Provider
-        value={{ toggleCompleted, editTask, removeTask }}
+        value={{ toggleCompleted, viewTask, editTask, removeTask }}
       >
         <Content isSidebarOpen={isSidebarOpen} allTasks={allTasks} />
       </ContentContext.Provider>
-      <ModalContext.Provider value={{ allProjects, removeTask }}>
+      <ModalContext.Provider
+        value={{ allProjects, allTasks, selectedTaskId, removeTask }}
+      >
         <FormProvider {...formMethods}>
           <Modal
             modalMode={modalMode}

@@ -1,4 +1,4 @@
-export interface Task {
+export interface TaskType {
   id: number;
   title: string;
   description: string;
@@ -6,10 +6,9 @@ export interface Task {
   priority: 'low' | 'medium' | 'high';
   project: string;
   completed: boolean;
-  first?: boolean;
 }
 
-export interface Project {
+export interface ProjectType {
   id: number;
   title: string;
 }
