@@ -76,8 +76,8 @@ export function Modal({
                     </Dialog.Title>
                     <button
                       type='button'
-                      className='rounded-full p-1 text-xl transition-colors duration-300
-                             hover:animate-spin hover:bg-red-500 hover:text-white'
+                      className='btn-focus rounded-full p-1 text-xl transition-colors duration-300
+                                 hover:animate-spin hover:bg-red-500 hover:text-white'
                       onClick={closeModal}
                     >
                       <VscClose />
@@ -95,13 +95,14 @@ export function Modal({
                     )}
                     <div
                       className='mt-4 flex justify-end gap-2 
-                             children:rounded-md children:border-2 children:px-4
-                             children:py-2 children:text-sm
-                             children:transition-colors children:duration-300'
+                                 children:rounded-md children:border-2 children:px-4
+                                 children:py-2 children:text-sm
+                                 children:transition-colors children:duration-300'
                     >
                       <button
                         type='button'
-                        className='hover:bg-gray-500 hover:text-white'
+                        className='btn-focus hover:bg-gray-500 hover:text-white 
+                                 focus-visible:ring-gray-400 focus-visible:ring-offset-2'
                         onClick={closeModal}
                       >
                         Close

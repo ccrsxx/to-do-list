@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import {
   ContentContext,
@@ -44,7 +44,8 @@ export function App() {
 
   useEffect(() => {
     const projects = document.getElementById('projects') as HTMLElement;
-    if (isProjectsOpen) projects.style.height = `${projects.scrollHeight}px`;
+    if (isProjectsOpen)
+      projects.style.height = `${projects.scrollHeight + 10}px`;
     else projects.style.height = '0px';
   }, [isProjectsOpen, modalMode === 'project']);
 
@@ -62,11 +63,13 @@ export function App() {
 
   const editTask = (targetId: number) => (e: React.MouseEvent) => {
     e.stopPropagation();
-    formMethods.reset(
-      allTasks.find((task) => task.id === targetId) as TaskType
-    );
+    formMethods.reset(allTasks.find(({ id }) => id === targetId) as TaskType);
     setModalMode('edit');
     setIsModalOpen(true);
+  };
+
+  const changePriority = (targetId: number) => (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   const removeTask = (targetId?: number) => (e: React.MouseEvent) => {
@@ -124,7 +127,8 @@ export function App() {
     }, 300);
   };
 
-  const toggleCompleted = (targetId: number) => () => {
+  const toggleCompleted = (targetId: number) => (e: React.MouseEvent) => {
+    e.stopPropagation();
     setAllTasks(
       allTasks.map((task) =>
         task.id === targetId ? { ...task, completed: !task.completed } : task
@@ -136,9 +140,9 @@ export function App() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleCurrentPage = (page: string) => () => {
-    if (currentPage === page) return;
-    setCurrentPage(page);
+  const handleCurrentPage = (targetPage: string) => () => {
+    if (currentPage === targetPage) return;
+    setCurrentPage(targetPage);
   };
 
   const handleProjectsClick = () => {
@@ -180,7 +184,7 @@ export function App() {
         handleProjectsClickOpen={handleProjectsClick}
       />
       <ContentContext.Provider
-        value={{ toggleCompleted, viewTask, editTask, removeTask }}
+        value={{ allProjects, viewTask, toggleCompleted, editTask, removeTask }}
       >
         <Content isSidebarOpen={isSidebarOpen} allTasks={allTasks} />
       </ContentContext.Provider>

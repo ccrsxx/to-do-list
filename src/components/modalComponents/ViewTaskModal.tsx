@@ -24,11 +24,10 @@ export function ViewTaskModal({ closeModal }: ViewTaskModalProps) {
             <h3 className='font-bold'>Description</h3>
             <textarea
               className='resize-none rounded border border-gray-300 p-2'
+              value={description}
               rows={4}
               disabled
-            >
-              {description}
-            </textarea>
+            />
           </div>
         </div>
         <div className='children:flex children:flex-col children:gap-1'>
@@ -49,7 +48,8 @@ export function ViewTaskModal({ closeModal }: ViewTaskModalProps) {
                    children:transition-colors children:duration-300'
       >
         <button
-          className='border-transparent bg-green-500 text-white hover:bg-green-400'
+          className='btn-focus border-transparent bg-green-500 text-white hover:bg-green-400 
+                   focus-visible:ring-green-500 focus-visible:ring-offset-2'
           type='button'
           onClick={closeModal}
         >
