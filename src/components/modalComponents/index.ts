@@ -1,4 +1,4 @@
 export * from './TaskModal';
 export * from './ViewTaskModal';
-export * from './removeModal';
+export * from './RemoveModal';
 export * from './ProjectModal';
