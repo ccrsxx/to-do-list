@@ -1,8 +1,8 @@
 import { createContext } from 'react';
-import { ProjectType } from '../types';
+import { TaskType } from '../types';
 
 interface ContentContextProps {
-  allProjects: ProjectType[];
+  allTasks: TaskType[];
   viewTask: (targetId: number) => () => void;
   toggleCompleted: (targetId: number) => (e: React.MouseEvent) => void;
   editTask: (targetId: number) => (e: React.MouseEvent) => void;

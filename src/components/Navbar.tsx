@@ -3,13 +3,13 @@ import { FiMenu, AiOutlineHome, VscAdd } from '../common';
 interface NavbarProps {
   handleSidebarClick: () => void;
   handleCurrentPage: (targetPage: string) => () => void;
-  openModal: () => void;
+  addTask: () => void;
 }
 
 export function Navbar({
   handleSidebarClick,
   handleCurrentPage,
-  openModal
+  addTask
 }: NavbarProps) {
   return (
     <nav className='flex w-full justify-between bg-nav-bg px-10 py-3 text-white children:flex children:gap-2'>
@@ -27,7 +27,7 @@ export function Navbar({
         <button
           className='hover:bg-white-ish focus-visible:ring-gray-200'
           type='button'
-          onClick={handleCurrentPage('today')}
+          onClick={handleCurrentPage('Today')}
         >
           <AiOutlineHome />
         </button>
@@ -39,7 +39,7 @@ export function Navbar({
         <button
           className='hover:bg-white-ish focus-visible:ring-gray-200'
           type='button'
-          onClick={openModal}
+          onClick={addTask}
         >
           <VscAdd />
         </button>

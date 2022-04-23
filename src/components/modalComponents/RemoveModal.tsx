@@ -3,11 +3,12 @@ import { Dialog } from '@headlessui/react';
 import { ModalContext, VscWarning } from '../../common';
 
 interface RemoveModalProps {
+  modalMode: string;
   closeModal: () => void;
 }
 
-export function RemoveModal({ closeModal }: RemoveModalProps) {
-  const { removeTask } = useContext(ModalContext);
+export function RemoveModal({ modalMode, closeModal }: RemoveModalProps) {
+  const { removeTask, removeProject } = useContext(ModalContext);
 
   return (
     <div className='flex flex-col items-center gap-4 text-center'>
@@ -15,7 +16,8 @@ export function RemoveModal({ closeModal }: RemoveModalProps) {
         <VscWarning />
       </i>
       <Dialog.Description className='text-lg'>
-        Are you sure you want to remove this task?
+        Are you sure you want to remove this{' '}
+        {modalMode === 'removeTask' ? 'task' : 'project'}?
       </Dialog.Description>
       <div
         className='flex gap-2 self-end children:rounded-md children:border children:border-gray-300 
@@ -31,7 +33,7 @@ export function RemoveModal({ closeModal }: RemoveModalProps) {
         <button
           className='bg-red-500 text-white hover:bg-red-400'
           type='button'
-          onClick={removeTask()}
+          onClick={modalMode === 'removeTask' ? removeTask() : removeProject()}
         >
           Confirm
         </button>

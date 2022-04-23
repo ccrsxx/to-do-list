@@ -1,12 +1,6 @@
 import { useContext } from 'react';
 import { ToolTips } from './ToolTips';
-import {
-  BsArrowRightCircle,
-  ContentContext,
-  FiEdit3,
-  FiFlag,
-  FiTrash2
-} from '../common';
+import { ContentContext, FiEdit3, FiTrash2 } from '../common';
 import { TaskType } from '../types';
 
 interface TaskListProps {
@@ -16,15 +10,20 @@ interface TaskListProps {
 
 export function TaskList({
   first,
-  task: { id, title, completed }
+  task: { id, title, priority, completed }
 }: TaskListProps) {
   const { viewTask, toggleCompleted, editTask, removeTask } =
     useContext(ContentContext);
 
   return (
     <div
-      className='btn-focus mr-4 flex justify-between rounded-sm border-b border-gray-300 p-1
-               focus-visible:ring-blue-400 children:flex children:gap-1'
+      className={`btn-focus mr-4 flex justify-between rounded-sm border-b-2 ${
+        priority === 'High'
+          ? 'border-red-400'
+          : priority === 'Medium'
+          ? 'border-orange-400'
+          : 'border-green-400'
+      } p-1 focus-visible:ring-blue-400 focus-visible:ring-offset-2 children:flex children:gap-1`}
       role='button'
       tabIndex={0}
       onClick={viewTask(id)}
@@ -55,23 +54,7 @@ export function TaskList({
           type='button'
           onClick={editTask(id)}
         >
-          <ToolTips Icon={FiEdit3} tips='Edit' first={first} popup='project' />
-        </button>
-        <button
-          className='group rounded p-1 hover:bg-gray-200 focus-visible:ring-blue-400'
-          type='button'
-        >
-          <ToolTips Icon={FiFlag} tips='Change priority' first={first} />
-        </button>
-        <button
-          className='group rounded p-1 hover:bg-gray-200 focus-visible:ring-blue-400'
-          type='button'
-        >
-          <ToolTips
-            Icon={BsArrowRightCircle}
-            tips='Move project'
-            first={first}
-          />
+          <ToolTips Icon={FiEdit3} tips='Edit' first={first} />
         </button>
         <button
           className='group rounded p-1 hover:bg-gray-200 focus-visible:ring-blue-400'

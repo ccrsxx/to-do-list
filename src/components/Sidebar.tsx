@@ -1,19 +1,23 @@
+import React from 'react';
 import {
   VscAdd,
+  FiEdit3,
+  FiTrash2,
   VscInbox,
   VscChevronUp,
   BsCalendar3,
   BsCalendar4
 } from '../common';
-import type { ProjectType } from '../types';
+import { ProjectType } from '../types';
 
 interface SidebarProps {
   currentPage: string;
   allProjects: ProjectType[];
   isProjectsOpen: boolean;
   isSidebarOpen: boolean;
-  todaysDate: string;
   addProject: () => void;
+  editProject: (targetId: number) => (e: React.MouseEvent) => void;
+  removeProject: (targetId: number) => (e: React.MouseEvent) => void;
   handleCurrentPage: (page: string) => () => void;
   handleProjectsClickOpen: () => void;
 }
@@ -23,13 +27,12 @@ export function Sidebar({
   allProjects,
   isProjectsOpen,
   isSidebarOpen,
-  todaysDate,
   addProject,
+  editProject,
+  removeProject,
   handleCurrentPage,
   handleProjectsClickOpen
 }: SidebarProps) {
-  const todayCalendar = `before:content-["${todaysDate}"]`;
-
   return (
     <aside
       className={`${
@@ -41,30 +44,30 @@ export function Sidebar({
     >
       <a
         className={`${
-          currentPage === 'inbox' && '!bg-gray-200 font-bold'
+          currentPage === 'Inbox' && '!bg-gray-200 font-bold'
         } hover:bg-white focus-visible:ring-blue-400`}
         role='button'
         tabIndex={0}
-        onClick={handleCurrentPage('inbox')}
+        onClick={handleCurrentPage('Inbox')}
       >
         <VscInbox className='text-xl text-blue-500' /> Inbox
       </a>
       <a
-        className={`${todayCalendar} ${
-          currentPage === 'today' && '!bg-gray-200 font-bold'
-        } before:absolute before:text-[10px] before:font-normal 
-        before:text-green-500 before:[transform:translate(4px,3px)] 
+        className={`${
+          currentPage === 'Today' && '!bg-gray-200 font-bold'
+        } btn-today before:absolute before:text-[10px] before:font-normal 
+        before:text-green-500 before:[transform:translate(4px,3px)]
         hover:bg-white focus-visible:ring-blue-400`}
         role='button'
         tabIndex={0}
-        onClick={handleCurrentPage('today')}
+        onClick={handleCurrentPage('Today')}
       >
         <BsCalendar4 className='text-xl text-green-500' />
         Today
       </a>
       <a
         className={`${
-          !['inbox', 'today'].includes(currentPage) && '!bg-gray-200'
+          !['Inbox', 'Today'].includes(currentPage) && '!bg-gray-200'
         } !mb-0 hover:bg-white focus-visible:ring-blue-400`}
         role='button'
         tabIndex={0}
@@ -89,24 +92,45 @@ export function Sidebar({
             key={id}
             className={`${
               currentPage === title && '!bg-gray-200 font-bold'
-            } text-sm transition-colors first:mt-1 hover:bg-white 
-              focus-visible:ring-blue-300`}
+            } group flex items-center justify-between text-sm transition-colors 
+            first:mt-1 hover:bg-white focus-visible:ring-blue-300`}
             role='button'
             tabIndex={0}
             onClick={handleCurrentPage(title)}
           >
-            📌 {title}
+            <p>📌 {title}</p>
+            <div
+              className='children:btn-focus invisible flex gap-1 group-hover:visible children:rounded
+                            children:p-1'
+            >
+              <button
+                className='hover:bg-gray-100'
+                type='button'
+                onClick={editProject(id)}
+              >
+                <FiEdit3 />
+              </button>
+              <button
+                className='hover:bg-gray-100'
+                type='button'
+                onClick={removeProject(id)}
+              >
+                <FiTrash2 />
+              </button>
+            </div>
           </a>
         ))}
         <button
+          className={`${
+            !allProjects.length && 'mt-1'
+          } group flex items-center gap-2 hover:text-red-500`}
           type='button'
-          className='group flex items-center gap-2 hover:text-red-500'
           onClick={addProject}
         >
           <i className='rounded-full p-1 transition-colors duration-300 group-hover:bg-red-500'>
             <VscAdd className='transition-colors duration-300 group-hover:text-white' />{' '}
           </i>
-          New project
+          New Project
         </button>
       </div>
     </aside>

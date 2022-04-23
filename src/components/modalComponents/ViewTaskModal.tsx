@@ -37,7 +37,7 @@ export function ViewTaskModal({ closeModal }: ViewTaskModalProps) {
           </div>
           <div>
             <h3 className='font-bold'>Priority</h3>
-            <p className='capitalize'>{priority}</p>
+            <p>{priority}</p>
           </div>
         </div>
       </div>

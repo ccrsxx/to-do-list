@@ -1,41 +1,16 @@
-import { useContext } from 'react';
-import { ContentContext, TiArrowSortedDown } from '../common';
+import { TiArrowSortedDown } from '../common';
 import { IconType } from '../types';
 
 interface ToolTipsProps {
   Icon: IconType;
   tips: string;
   first: undefined | boolean;
-  popup?: undefined | 'priority' | 'project';
 }
 
-export function ToolTips({ Icon, tips, first, popup }: ToolTipsProps) {
-  const allProjects =
-    popup === 'project' ? useContext(ContentContext).allProjects : null;
-
+export function ToolTips({ Icon, tips, first }: ToolTipsProps) {
   return (
     <>
       <Icon className='group-hover:text-black' />
-      {popup && (
-        <div
-          className='absolute -top-1 right-8 flex 
-                     flex-col gap-1 rounded border
-                     border-gray-300 bg-white p-2 text-sm'
-        >
-          {popup === 'project'
-            ? allProjects!.map(({ id, title }) => (
-                <button
-                  className='w-full whitespace-nowrap rounded p-1
-                           hover:bg-nav-bg hover:text-white'
-                  key={id}
-                  type='button'
-                >
-                  {title}
-                </button>
-              ))
-            : undefined}
-        </div>
-      )}
       <div
         style={first ? { top: 35 } : undefined}
         className='invisible absolute -top-[35px] left-[50%] translate-x-[-50%] whitespace-nowrap 

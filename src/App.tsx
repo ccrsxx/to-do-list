@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import {
   ContentContext,
@@ -11,21 +11,22 @@ import { Content, Modal, Navbar, Sidebar } from './components';
 import { ProjectType, TaskType, ModalType } from './types';
 
 export function App() {
-  const [currentPage, setCurrentPage] = useLocalStorage('currentPage', 'inbox');
-
+  const [currentPage, setCurrentPage] = useLocalStorage('currentPage', 'Inbox');
+  const [allTasks, setAllTasks] = useLocalStorage<TaskType[]>('allTasks', []);
   const [allProjects, setAllProjects] = useLocalStorage<ProjectType[]>(
     'allProjects',
     []
   );
+  const [isProjectsOpen, setIsProjectsOpen] = useLocalStorage(
+    'isProjectOpen',
+    true
+  );
 
-  const [allTasks, setAllTasks] = useLocalStorage<TaskType[]>('allTasks', []);
   const [selectedTaskId, setSelectedTaskId] = useState<null | number>(null);
-  const [modalMode, setModalMode] = useState<ModalType>('add');
-
+  const [modalMode, setModalMode] = useState<ModalType>('addTask');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isProjectsOpen, setIsProjectsOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 800);
 
   const formMethods = useForm<TaskType | ProjectType>({
     defaultValues: newTaskDefault
@@ -38,6 +39,11 @@ export function App() {
   }, []);
 
   useEffect(() => {
+    const todaysDate = new Date().toLocaleDateString('en-gb').slice(0, 2);
+    document.documentElement.style.setProperty('--todays-date', todaysDate);
+  }, []);
+
+  useEffect(() => {
     if (isMobile && isSidebarOpen) setIsSidebarOpen(false);
     else if (!isMobile && !isSidebarOpen) setIsSidebarOpen(true);
   }, [isMobile]);
@@ -45,59 +51,105 @@ export function App() {
   useEffect(() => {
     const projects = document.getElementById('projects') as HTMLElement;
     if (isProjectsOpen)
-      projects.style.height = `${projects.scrollHeight + 10}px`;
+      projects.style.height = `${projects.scrollHeight + 16}px`;
     else projects.style.height = '0px';
-  }, [isProjectsOpen, modalMode === 'project']);
+  }, [isProjectsOpen, allProjects]);
 
-  const addProject = () => {
-    formMethods.reset(newProjectDefault);
-    setModalMode('project');
+  useEffect(() => {
+    if (currentPage === 'Today') formMethods.setValue('project', 'Inbox');
+    else if (currentPage !== 'Today')
+      formMethods.setValue('project', currentPage);
+  }, [currentPage]);
+
+  const addTask = () => {
+    if (modalMode !== 'addTask') formMethods.reset(newTaskDefault);
+
+    setModalMode('addTask');
     setIsModalOpen(true);
   };
 
-  const viewTask = (targetId: number) => () => {
-    setModalMode('view');
+  const addProject = () => {
+    if (modalMode !== 'addProject') formMethods.reset(newProjectDefault);
+
+    setModalMode('addProject');
     setIsModalOpen(true);
-    setSelectedTaskId(targetId);
   };
 
   const editTask = (targetId: number) => (e: React.MouseEvent) => {
     e.stopPropagation();
     formMethods.reset(allTasks.find(({ id }) => id === targetId) as TaskType);
-    setModalMode('edit');
+    setSelectedTaskId(targetId);
+    setModalMode('editTask');
     setIsModalOpen(true);
   };
 
-  const changePriority = (targetId: number) => (e: React.MouseEvent) => {
+  const editProject = (targetId: number) => (e: React.MouseEvent) => {
     e.stopPropagation();
+    const project = allProjects.find(({ id }) => id === targetId);
+    formMethods.reset(project);
+    setSelectedTaskId(targetId);
+    setModalMode('editProject');
+    setIsModalOpen(true);
   };
 
   const removeTask = (targetId?: number) => (e: React.MouseEvent) => {
     if (targetId) {
       e.stopPropagation();
-      setModalMode('remove');
-      setIsModalOpen(true);
       setSelectedTaskId(targetId);
+      setModalMode('removeTask');
+      setIsModalOpen(true);
     } else if (selectedTaskId) {
-      setAllTasks(allTasks.filter((task) => task.id !== selectedTaskId));
+      setAllTasks(allTasks.filter(({ id }) => id !== selectedTaskId));
       setIsModalOpen(false);
-      resetForm();
+      setSelectedTaskId(null);
     }
   };
 
+  const removeProject = (targetId?: number) => (e: React.MouseEvent) => {
+    if (targetId) {
+      e.stopPropagation();
+      setSelectedTaskId(targetId);
+      setModalMode('removeProject');
+      setIsModalOpen(true);
+    } else if (selectedTaskId) {
+      const { title: prevProjectTitle } = allProjects.find(
+        ({ id }) => id === selectedTaskId
+      ) as ProjectType;
+
+      setAllTasks(
+        allTasks.filter(({ project }) => project !== prevProjectTitle)
+      );
+
+      setAllProjects(allProjects.filter(({ id }) => id !== selectedTaskId));
+      setIsModalOpen(false);
+      setSelectedTaskId(null);
+
+      if (currentPage === prevProjectTitle) setCurrentPage('Inbox');
+    }
+  };
+
+  const viewTask = (targetId: number) => () => {
+    setSelectedTaskId(targetId);
+    setModalMode('viewTask');
+    setIsModalOpen(true);
+  };
+
   const onSubmit = (currentTask: TaskType | ProjectType) => {
-    if (modalMode === 'add') {
+    if (modalMode === 'addTask') {
       setAllTasks([
         { ...currentTask, id: Date.now() } as TaskType,
         ...allTasks
       ]);
-    } else if (modalMode === 'edit') {
+      setTimeout(() => {
+        formMethods.reset(newTaskDefault);
+      }, 250);
+    } else if (modalMode === 'editTask') {
       setAllTasks(
         allTasks.map((task) =>
           task.id === currentTask.id ? currentTask : task
         ) as TaskType[]
       );
-    } else if (modalMode === 'project') {
+    } else if (['addProject', 'editProject'].includes(modalMode)) {
       let { title } = currentTask;
 
       title = title.trim();
@@ -107,24 +159,42 @@ export function App() {
       ) {
         formMethods.setError('title', {
           type: 'custom',
-          message: `Project with title "${title}" already exists!`
+          message:
+            modalMode === 'addProject'
+              ? `Project with title "${title}" already exists!`
+              : `You cannot rename project to "${title}" as it already exists!`
         });
         return;
       }
 
-      setAllProjects([...allProjects, { id: Date.now(), title }]);
+      if (modalMode === 'addProject')
+        setAllProjects([...allProjects, { id: Date.now(), title }]);
+      else {
+        const { title: prevProjectTitle } = allProjects.find(
+          ({ id }) => id === selectedTaskId
+        ) as ProjectType;
+
+        setAllTasks(
+          allTasks.map((task) =>
+            task.project === prevProjectTitle
+              ? { ...task, project: title }
+              : task
+          )
+        );
+
+        setAllProjects(
+          allProjects.map((project) =>
+            project.id === currentTask.id ? { ...project, title } : project
+          )
+        );
+
+        if (currentPage === prevProjectTitle) setCurrentPage(title);
+
+        setSelectedTaskId(null);
+      }
     }
 
     setIsModalOpen(false);
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setTimeout(() => {
-      setModalMode('add');
-      setSelectedTaskId(null);
-      formMethods.reset(newTaskDefault);
-    }, 300);
   };
 
   const toggleCompleted = (targetId: number) => (e: React.MouseEvent) => {
@@ -149,47 +219,52 @@ export function App() {
     setIsProjectsOpen(!isProjectsOpen);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
-
-    if (modalMode !== 'add') {
-      resetForm();
-    }
   };
-
-  const todaysDate = useMemo(
-    () => new Date().toLocaleDateString('en-gb').slice(0, 2),
-    []
-  );
 
   return (
     <>
       <Navbar
         handleSidebarClick={handleSidebarClick}
         handleCurrentPage={handleCurrentPage}
-        openModal={openModal}
+        addTask={addTask}
       />
       <Sidebar
         currentPage={currentPage}
         allProjects={allProjects}
         isSidebarOpen={isSidebarOpen}
         isProjectsOpen={isProjectsOpen}
-        todaysDate={todaysDate}
         addProject={addProject}
+        editProject={editProject}
+        removeProject={removeProject}
         handleCurrentPage={handleCurrentPage}
         handleProjectsClickOpen={handleProjectsClick}
       />
       <ContentContext.Provider
-        value={{ allProjects, viewTask, toggleCompleted, editTask, removeTask }}
+        value={{
+          allTasks,
+          viewTask,
+          toggleCompleted,
+          editTask,
+          removeTask
+        }}
       >
-        <Content isSidebarOpen={isSidebarOpen} allTasks={allTasks} />
+        <Content
+          currentPage={currentPage}
+          isSidebarOpen={isSidebarOpen}
+          allTasks={allTasks}
+        />
       </ContentContext.Provider>
       <ModalContext.Provider
-        value={{ allProjects, allTasks, selectedTaskId, removeTask }}
+        value={{
+          currentPage,
+          allProjects,
+          allTasks,
+          selectedTaskId,
+          removeTask,
+          removeProject
+        }}
       >
         <FormProvider {...formMethods}>
           <Modal
