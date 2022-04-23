@@ -3,7 +3,7 @@ export interface TaskType {
   title: string;
   description: string;
   date: string;
-  priority: 'low' | 'medium' | 'high';
+  priority: 'Low' | 'Medium' | 'High';
   project: string;
   completed: boolean;
 }

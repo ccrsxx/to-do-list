@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import { ModalContext } from '../../common';
 
 export function TaskModal() {
-  const { allProjects } = useContext(ModalContext);
+  const { currentPage, allProjects } = useContext(ModalContext);
   const {
     register,
     formState: { errors, dirtyFields }
@@ -78,11 +78,11 @@ export function TaskModal() {
               errors.title || dirtyFields.title ? 'border-green-500' : undefined
             }
             {...register('priority', { required: true })}
-            defaultValue='medium'
+            defaultValue='Medium'
           >
-            <option value='low'>Low</option>
-            <option value='medium'>Medium</option>
-            <option value='high'>High</option>
+            <option value='Low'>Low</option>
+            <option value='Medium'>Medium</option>
+            <option value='High'>High</option>
           </select>
         </div>
         <div className='children:rounded children:transition-[box-shadow] children:duration-300'>
@@ -93,9 +93,9 @@ export function TaskModal() {
               errors.title || dirtyFields.title ? 'border-green-500' : undefined
             }
             {...register('project', { required: true })}
-            defaultValue='inbox'
+            defaultValue={currentPage}
           >
-            <option value='inbox'>Inbox</option>
+            <option value='Inbox'>Inbox</option>
             {allProjects.map(({ id, title }) => (
               <option key={id} value={title}>
                 {title}

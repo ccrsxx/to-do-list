@@ -54,30 +54,34 @@ export function Modal({
           >
             <div
               className={`${
-                ['add', 'edit'].includes(modalMode)
+                ['addTask', 'editTask'].includes(modalMode)
                   ? 'max-w-3xl'
-                  : ['view', 'remove'].includes(modalMode)
+                  : ['viewTask', 'removeTask', 'removeProject'].includes(
+                      modalMode
+                    )
                   ? 'max-w-md'
                   : 'max-w-lg'
               } my-8 inline-block w-full transform overflow-hidden rounded-xl
               bg-white p-6 text-left align-middle shadow-xl transition-all`}
             >
-              {modalMode === 'view' ? (
+              {modalMode === 'viewTask' ? (
                 <ViewTaskModal closeModal={closeModal} />
-              ) : modalMode === 'remove' ? (
-                <RemoveModal closeModal={closeModal} />
+              ) : ['removeTask', 'removeProject'].includes(modalMode) ? (
+                <RemoveModal modalMode={modalMode} closeModal={closeModal} />
               ) : (
                 <>
                   <div className='flex justify-between border-b-2 pb-2'>
                     <Dialog.Title className='text-lg font-medium leading-6 text-gray-900'>
-                      {`${
-                        ['add', 'project'].includes(modalMode) ? 'New' : 'Edit'
-                      } ${modalMode === 'project' ? 'Project' : 'Task'}`}
+                      {`${modalMode === 'addTask' ? 'New' : 'Edit'} ${
+                        ['addProject', 'editProject'].includes(modalMode)
+                          ? 'Project'
+                          : 'Task'
+                      }`}
                     </Dialog.Title>
                     <button
                       type='button'
-                      className='rounded-full p-1 text-xl transition-colors duration-300
-                             hover:animate-spin hover:bg-red-500 hover:text-white'
+                      className='btn-focus rounded-full p-1 text-xl transition-colors duration-300
+                                 hover:animate-spin hover:bg-red-500 hover:text-white'
                       onClick={closeModal}
                     >
                       <VscClose />
@@ -88,20 +92,21 @@ export function Modal({
                     autoComplete='off'
                     onSubmit={handleSubmit(onSubmit)}
                   >
-                    {['add', 'edit'].includes(modalMode) ? (
+                    {['addTask', 'editTask'].includes(modalMode) ? (
                       <TaskModal />
                     ) : (
                       <ProjectModal />
                     )}
                     <div
                       className='mt-4 flex justify-end gap-2 
-                             children:rounded-md children:border-2 children:px-4
-                             children:py-2 children:text-sm
-                             children:transition-colors children:duration-300'
+                                 children:rounded-md children:border-2 children:px-4
+                                 children:py-2 children:text-sm
+                                 children:transition-colors children:duration-300'
                     >
                       <button
                         type='button'
-                        className='hover:bg-gray-500 hover:text-white'
+                        className='btn-focus hover:bg-gray-500 hover:text-white 
+                                 focus-visible:ring-gray-400 focus-visible:ring-offset-2'
                         onClick={closeModal}
                       >
                         Close
@@ -111,8 +116,10 @@ export function Modal({
                         className='border-transparent bg-nav-bg text-white hover:bg-red-400 focus:outline-none
                                    focus-visible:ring-2 focus-visible:ring-nav-bg focus-visible:ring-offset-2'
                       >
-                        {`${modalMode === 'edit' ? 'Update' : 'Add'} ${
-                          modalMode === 'project' ? 'Project' : 'Task'
+                        {`${modalMode === 'editTask' ? 'Update' : 'Add'} ${
+                          ['addProject', 'editProject'].includes(modalMode)
+                            ? 'Project'
+                            : 'Task'
                         }`}
                       </button>
                     </div>

@@ -1,8 +1,10 @@
 import { createContext } from 'react';
+import { TaskType } from '../types';
 
 interface ContentContextProps {
-  toggleCompleted: (targetId: number) => () => void;
+  allTasks: TaskType[];
   viewTask: (targetId: number) => () => void;
+  toggleCompleted: (targetId: number) => (e: React.MouseEvent) => void;
   editTask: (targetId: number) => (e: React.MouseEvent) => void;
   removeTask: (targetId: number) => (e: React.MouseEvent) => void;
 }

@@ -1,1 +1,8 @@
-export type ModalType = 'add' | 'view' | 'edit' | 'project' | 'remove';
+export type ModalType =
+  | 'addTask'
+  | 'addProject'
+  | 'editTask'
+  | 'editProject'
+  | 'removeTask'
+  | 'removeProject'
+  | 'viewTask';
