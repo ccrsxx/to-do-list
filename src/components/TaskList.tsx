@@ -23,7 +23,7 @@ export function TaskList({
           : priority === 'Medium'
           ? 'border-orange-400'
           : 'border-green-400'
-      } btn-focus mr-4 flex justify-between rounded-sm border-b-2 p-1 
+      } btn-focus mr-4 flex justify-between rounded-sm border-b-2 p-1
       focus-visible:ring-blue-400 focus-visible:ring-offset-2 children:flex children:gap-1`}
       role='button'
       tabIndex={0}
