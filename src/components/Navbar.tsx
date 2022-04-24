@@ -12,7 +12,10 @@ export function Navbar({
   addTask
 }: NavbarProps) {
   return (
-    <nav className='flex w-full justify-between bg-nav-bg px-10 py-3 text-white children:flex children:gap-2'>
+    <nav
+      className='flex w-full justify-between bg-nav-bg px-5 py-3 
+               text-white children:flex children:gap-2 sm:px-10'
+    >
       <div
         className='children:btn-focus children:rounded children:p-1 children:text-xl
                    children:transition'

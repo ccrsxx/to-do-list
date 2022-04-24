@@ -59,7 +59,7 @@ export function App() {
     if (currentPage === 'Today') formMethods.setValue('project', 'Inbox');
     else if (currentPage !== 'Today')
       formMethods.setValue('project', currentPage);
-  }, [currentPage]);
+  }, [currentPage, modalMode]);
 
   const addTask = () => {
     if (modalMode !== 'addTask') formMethods.reset(newTaskDefault);
@@ -250,8 +250,10 @@ export function App() {
       >
         <Content
           currentPage={currentPage}
-          isSidebarOpen={isSidebarOpen}
           allTasks={allTasks}
+          isMobile={isMobile}
+          isSidebarOpen={isSidebarOpen}
+          handleSidebarClick={handleSidebarClick}
         />
       </ContentContext.Provider>
       <ModalContext.Provider

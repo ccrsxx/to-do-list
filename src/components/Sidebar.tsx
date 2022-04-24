@@ -37,10 +37,10 @@ export function Sidebar({
     <aside
       className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } children:btn-focus fixed z-10 h-full w-[300px] flex-col bg-sidebar-bg pl-9 
-        pt-5 transition-transform duration-300 children:mb-2 children:mr-2
-        children:flex children:cursor-pointer children:select-none children:items-center
-        children:gap-4 children:rounded children:p-2 children:transition`}
+      } children:btn-focus fixed z-20 h-full w-[75vw] flex-col bg-sidebar-bg pl-4 pt-4 transition-transform
+        duration-300 children:mb-2 children:mr-2 children:flex children:cursor-pointer
+        children:select-none children:items-center children:gap-4 children:rounded
+        children:p-2 children:transition sm:w-[300px] sm:pl-9 sm:pt-5`}
     >
       <a
         className={`${
@@ -100,9 +100,9 @@ export function Sidebar({
           >
             <p className='break-all'>📌 {title}</p>
             <div
-              className='children:btn-focus invisible flex gap-1 opacity-0 transition-opacity
-                         duration-300 group-hover:visible group-hover:opacity-100 
-                         children:rounded children:p-1'
+              className='children:btn-focus invisible ml-1 flex gap-1 self-start
+                         opacity-0 transition-opacity duration-300 
+                         group-hover:visible group-hover:opacity-100 children:rounded children:p-1'
             >
               <button
                 className='group-sidebar relative hover:bg-gray-100'

@@ -28,7 +28,7 @@ export function Modal({
   return (
     <Transition show={isModalOpen} as={Fragment}>
       <Dialog
-        className='fixed inset-0 z-10 overflow-y-auto'
+        className='fixed inset-0 z-30 overflow-y-auto'
         onClose={closeModal}
       >
         <div className='flex min-h-screen items-center justify-center px-4 text-center'>
@@ -72,7 +72,11 @@ export function Modal({
                 <>
                   <div className='flex justify-between border-b-2 pb-2'>
                     <Dialog.Title className='text-lg font-medium leading-6 text-gray-900'>
-                      {`${modalMode === 'addTask' ? 'New' : 'Edit'} ${
+                      {`${
+                        ['addTask', 'addProject'].includes(modalMode)
+                          ? 'New'
+                          : 'Edit'
+                      } ${
                         ['addProject', 'editProject'].includes(modalMode)
                           ? 'Project'
                           : 'Task'

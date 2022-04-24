@@ -56,13 +56,13 @@ export function TaskModal() {
           <label htmlFor='date'>Due date</label>
           <input
             id='date'
-            className={
+            className={`${
               errors.date
                 ? 'border-pink-600'
                 : dirtyFields.date
                 ? 'border-green-500'
-                : undefined
-            }
+                : ''
+            } w-full sm:w-auto`}
             type='date'
             {...register('date', { required: true })}
           />
