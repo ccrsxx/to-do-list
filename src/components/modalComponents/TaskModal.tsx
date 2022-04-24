@@ -78,7 +78,7 @@ export function TaskModal() {
               errors.title || dirtyFields.title ? 'border-green-500' : undefined
             }
             {...register('priority', { required: true })}
-            defaultValue='Medium'
+            defaultValue='Low'
           >
             <option value='Low'>Low</option>
             <option value='Medium'>Medium</option>

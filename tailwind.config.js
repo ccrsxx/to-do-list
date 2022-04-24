@@ -1,10 +1,12 @@
 const colors = require('tailwindcss/colors');
 const forms = require('@tailwindcss/forms');
+const plugin = require('tailwindcss/plugin');
 
 module.exports = {
   darkMode: 'class',
   content: ['./src/**/*.{ts,tsx}', './public/index.html'],
   theme: {
+    groups: ['sidebar'],
     extend: {
       transitionProperty: {
         height: 'height'
@@ -22,6 +24,15 @@ module.exports = {
   },
   plugins: [
     forms,
+    plugin(({ addVariant, theme }) => {
+      const groups = theme('groups') || [];
+      groups.forEach((group) => {
+        addVariant(
+          `group-${group}-hover`,
+          () => `:merge(.group-${group}):hover &`
+        );
+      });
+    }),
     ({ addVariant }) => {
       addVariant('children', '& > *');
     }

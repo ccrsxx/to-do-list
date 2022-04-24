@@ -1,4 +1,4 @@
-import React from 'react';
+import { ToolTips } from './ToolTips';
 import {
   VscAdd,
   FiEdit3,
@@ -56,7 +56,7 @@ export function Sidebar({
         className={`${
           currentPage === 'Today' && '!bg-gray-200 font-bold'
         } btn-today before:absolute before:text-[10px] before:font-normal 
-        before:text-green-500 before:[transform:translate(4px,3px)]
+        before:text-green-500 before:[transform:translate(4.5px,3px)]
         hover:bg-white focus-visible:ring-blue-400`}
         role='button'
         tabIndex={0}
@@ -87,7 +87,7 @@ export function Sidebar({
                    !p-0 !transition-height !duration-300 children:w-[calc(100%-6px)]
                    children:rounded children:p-1'
       >
-        {allProjects.map(({ id, title }) => (
+        {allProjects.map(({ id, title }, index) => (
           <a
             key={id}
             className={`${
@@ -98,24 +98,35 @@ export function Sidebar({
             tabIndex={0}
             onClick={handleCurrentPage(title)}
           >
-            <p>📌 {title}</p>
+            <p className='break-all'>📌 {title}</p>
             <div
-              className='children:btn-focus invisible flex gap-1 group-hover:visible children:rounded
-                            children:p-1'
+              className='children:btn-focus invisible flex gap-1 opacity-0 transition-opacity
+                         duration-300 group-hover:visible group-hover:opacity-100 
+                         children:rounded children:p-1'
             >
               <button
-                className='hover:bg-gray-100'
+                className='group-sidebar relative hover:bg-gray-100'
                 type='button'
                 onClick={editProject(id)}
               >
-                <FiEdit3 />
+                <ToolTips
+                  Icon={FiEdit3}
+                  tips='Edit'
+                  first={index === 0}
+                  sidebar
+                />
               </button>
               <button
-                className='hover:bg-gray-100'
+                className='group-sidebar relative mr-2 hover:bg-gray-100'
                 type='button'
                 onClick={removeProject(id)}
               >
-                <FiTrash2 />
+                <ToolTips
+                  Icon={FiTrash2}
+                  tips='Delete'
+                  first={index === 0}
+                  sidebar
+                />
               </button>
             </div>
           </a>

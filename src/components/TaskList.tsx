@@ -17,13 +17,14 @@ export function TaskList({
 
   return (
     <div
-      className={`btn-focus mr-4 flex justify-between rounded-sm border-b-2 ${
+      className={`${
         priority === 'High'
           ? 'border-red-400'
           : priority === 'Medium'
           ? 'border-orange-400'
           : 'border-green-400'
-      } p-1 focus-visible:ring-blue-400 focus-visible:ring-offset-2 children:flex children:gap-1`}
+      } btn-focus mr-4 flex justify-between rounded-sm border-b-2 p-1 
+      focus-visible:ring-blue-400 focus-visible:ring-offset-2 children:flex children:gap-1`}
       role='button'
       tabIndex={0}
       onClick={viewTask(id)}
@@ -39,16 +40,18 @@ export function TaskList({
           <input
             className='form-check-input cursor-pointer appearance-none rounded-sm border border-gray-300
                      bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200
-                       checked:border-blue-500 checked:bg-blue-500 hover:bg-gray-200 focus:outline-none'
+                     checked:bg-blue-500 marker:checked:border-blue-500 hover:bg-gray-200 focus:outline-none'
             type='checkbox'
             checked={completed}
             tabIndex={-1}
             readOnly
           />
         </button>
-        <p className={`${completed && 'line-through'} inline-block`}>{title}</p>
+        <p className={`${completed && 'line-through'} inline-block break-all`}>
+          {title}
+        </p>
       </div>
-      <div className='children:btn-focus children:relative children:transition-colors children:duration-300'>
+      <div className='children:btn-focus items-start children:relative children:transition-colors children:duration-300'>
         <button
           className='group rounded p-1 hover:bg-gray-200 focus-visible:ring-blue-400'
           type='button'

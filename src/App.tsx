@@ -159,17 +159,15 @@ export function App() {
       ) {
         formMethods.setError('title', {
           type: 'custom',
-          message:
-            modalMode === 'addProject'
-              ? `Project with title "${title}" already exists!`
-              : `You cannot rename project to "${title}" as it already exists!`
+          message: `Project with title '${title}' already exists!`
         });
         return;
       }
 
-      if (modalMode === 'addProject')
+      if (modalMode === 'addProject') {
         setAllProjects([...allProjects, { id: Date.now(), title }]);
-      else {
+        formMethods.reset();
+      } else {
         const { title: prevProjectTitle } = allProjects.find(
           ({ id }) => id === selectedTaskId
         ) as ProjectType;

@@ -6,6 +6,10 @@
   --todays-date: '';
 }
 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 @layer components {
   .btn-focus {
     @apply transition duration-200 focus:outline-none focus-visible:ring-2;
