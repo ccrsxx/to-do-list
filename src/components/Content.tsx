@@ -31,7 +31,8 @@ export function Content({
     <main
       className={`${
         isSidebarOpen && 'sm:ml-[300px]'
-      } relative p-5 pr-2 transition-all duration-300 children:mx-auto children:max-w-5xl sm:block sm:p-10 sm:pr-4`}
+      } relative p-5 pr-2 transition-all duration-300 
+        children:mx-auto children:max-w-5xl sm:p-10 sm:pr-4`}
     >
       <div
         className={`${

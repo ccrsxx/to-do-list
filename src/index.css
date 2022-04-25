@@ -4,10 +4,15 @@
 
 :root {
   --todays-date: '';
+  --main-container-height: '';
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+}
+
+#root > main {
+  min-height: var(--main-container-height);
 }
 
 @layer components {

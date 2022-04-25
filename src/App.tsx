@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useState, useEffect } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Content, Modal, Navbar, Sidebar } from './components';
 import {
   ContentContext,
   ModalContext,
@@ -7,7 +8,6 @@ import {
   newTaskDefault,
   useLocalStorage
 } from './common';
-import { Content, Modal, Navbar, Sidebar } from './components';
 import { ProjectType, TaskType, ModalType } from './types';
 
 export function App() {
@@ -33,7 +33,23 @@ export function App() {
   });
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 800);
+    const handleContainerHeight = () => {
+      const mainContainer = document.querySelector(
+        '#root > nav'
+      ) as HTMLDivElement;
+      return window.innerHeight - mainContainer.clientHeight - 1;
+    };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 800);
+      document.documentElement.style.setProperty(
+        '--main-container-height',
+        `${handleContainerHeight()}px`
+      );
+    };
+    document.documentElement.style.setProperty(
+      '--main-container-height',
+      `${handleContainerHeight()}px`
+    );
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
