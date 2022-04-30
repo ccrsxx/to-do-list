@@ -38,9 +38,9 @@ export function Sidebar({
       className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } children:btn-focus fixed z-20 h-full w-[75vw] flex-col bg-sidebar-bg pl-4 pt-4 transition-transform
-        children:mb-2 children:mr-2 children:flex children:cursor-pointer children:select-none
-        children:items-center children:gap-4 children:rounded children:p-2
-        children:transition children:duration-300 sm:w-[300px] sm:pl-9 sm:pt-5`}
+        duration-300 children:mb-2 children:mr-2 children:flex children:cursor-pointer children:select-none
+        children:items-center children:gap-4 children:rounded children:p-2 children:transition children:duration-300
+        sm:w-[300px] sm:pl-9 sm:pt-5`}
     >
       <a
         className={`${
@@ -84,7 +84,7 @@ export function Sidebar({
       <div
         id='projects'
         className='children:btn-focus ml-9 mt-1 flex flex-col !gap-2 overflow-hidden
-                   !p-0 !transition-height !duration-300 children:w-[calc(100%-6px)]
+                   !p-0 !transition-height children:w-[calc(100%-6px)]
                    children:rounded children:p-1'
       >
         {allProjects.map(({ id, title }, index) => (
