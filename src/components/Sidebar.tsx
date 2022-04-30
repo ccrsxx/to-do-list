@@ -38,9 +38,9 @@ export function Sidebar({
       className={`${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } children:btn-focus fixed z-20 h-full w-[75vw] flex-col bg-sidebar-bg pl-4 pt-4 transition-transform
-        duration-300 children:mb-2 children:mr-2 children:flex children:cursor-pointer
-        children:select-none children:items-center children:gap-4 children:rounded
-        children:p-2 children:transition sm:w-[300px] sm:pl-9 sm:pt-5`}
+        children:mb-2 children:mr-2 children:flex children:cursor-pointer children:select-none
+        children:items-center children:gap-4 children:rounded children:p-2
+        children:transition children:duration-300 sm:w-[300px] sm:pl-9 sm:pt-5`}
     >
       <a
         className={`${

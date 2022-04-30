@@ -61,8 +61,8 @@ export function Modal({
                     )
                   ? 'max-w-md'
                   : 'max-w-lg'
-              } my-8 inline-block w-full transform overflow-hidden rounded-xl
-              bg-white p-6 text-left align-middle shadow-xl transition-all`}
+              } my-8 inline-block w-full transform overflow-hidden rounded-xl bg-white
+              p-6 text-left align-middle shadow-xl transition-all sm:my-0`}
             >
               {modalMode === 'viewTask' ? (
                 <ViewTaskModal closeModal={closeModal} />

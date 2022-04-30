@@ -20,7 +20,6 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
-  plugins: ['react', '@typescript-eslint'],
   rules: {
     '@typescript-eslint/quotes': ['error', 'single'],
     '@typescript-eslint/semi': ['warn', 'always'],
@@ -36,7 +35,6 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'import/no-duplicates': 'off',
     'no-console': 'warn',
-    'linebreak-style': 'off',
     'no-nested-ternary': 'off',
     'react/no-array-index-key': 'off',
     'react/require-default-props': 'off',
