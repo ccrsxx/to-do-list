@@ -46,17 +46,18 @@ export function App() {
         `${handleContainerHeight()}px`
       );
     };
+    const todaysDate = new Date().toLocaleDateString('en-gb').slice(0, 2);
+
+    if (parseInt(todaysDate, 10) < 10)
+      document.documentElement.style.setProperty('--date-spacing', '7px');
+
+    document.documentElement.style.setProperty('--todays-date', todaysDate);
     document.documentElement.style.setProperty(
       '--main-container-height',
       `${handleContainerHeight()}px`
     );
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const todaysDate = new Date().toLocaleDateString('en-gb').slice(0, 2);
-    document.documentElement.style.setProperty('--todays-date', todaysDate);
   }, []);
 
   useEffect(() => {

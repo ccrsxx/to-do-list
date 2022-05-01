@@ -5,6 +5,7 @@
 :root {
   --todays-date: '';
   --main-container-height: '';
+  --date-spacing: 4.5px;
 }
 
 * {
@@ -23,5 +24,6 @@
   .btn-today::before {
     counter-reset: todays-date var(--todays-date);
     content: counter(todays-date) !important;
+    transform: translate(var(--date-spacing), 3px) !important;
   }
 }

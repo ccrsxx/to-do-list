@@ -56,8 +56,7 @@ export function Sidebar({
         className={`${
           currentPage === 'Today' && '!bg-gray-200 font-bold'
         } btn-today before:absolute before:text-[10px] before:font-normal 
-        before:text-green-500 before:[transform:translate(4.5px,3px)]
-        hover:bg-white focus-visible:ring-blue-400`}
+        before:text-green-500 hover:bg-white focus-visible:ring-blue-400`}
         role='button'
         tabIndex={0}
         onClick={handleCurrentPage('Today')}
