@@ -34,28 +34,20 @@ export function App() {
 
   useEffect(() => {
     const handleContainerHeight = () => {
-      const mainContainer = document.querySelector(
-        '#root > nav'
-      ) as HTMLDivElement;
-      return window.innerHeight - mainContainer.clientHeight - 1;
+      const mainContainer = document.querySelector('main') as HTMLDivElement;
+      const navContainer = document.querySelector('nav') as HTMLDivElement;
+      mainContainer.style.height = `${
+        window.innerHeight - navContainer.clientHeight - 1
+      }px`;
     };
     const handleResize = () => {
       setIsMobile(window.innerWidth < 800);
-      document.documentElement.style.setProperty(
-        '--main-container-height',
-        `${handleContainerHeight()}px`
-      );
+      handleContainerHeight();
     };
     const todaysDate = new Date().toLocaleDateString('en-gb').slice(0, 2);
-
     if (parseInt(todaysDate, 10) < 10)
       document.documentElement.style.setProperty('--date-spacing', '7px');
-
     document.documentElement.style.setProperty('--todays-date', todaysDate);
-    document.documentElement.style.setProperty(
-      '--main-container-height',
-      `${handleContainerHeight()}px`
-    );
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
